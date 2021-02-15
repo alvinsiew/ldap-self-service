@@ -24,7 +24,7 @@ func ParseYAML() Config {
 	// 	log.Fatal(err)
 	// }
 
-	filename, _ := filepath.Abs("../config.yml")
+	filename, _ := filepath.Abs("../conf/config.yml")
 	yamlFile, err := ioutil.ReadFile(filename)
 
 	if err != nil {
