@@ -1,5 +1,13 @@
 # ldap-self-service
 
+## Prerequiste
+
+Openldap client need to be installed.
+
+```bash
+yum install -y openldap openldap-clients
+```
+
 ## Self-compile
 
 ```bash

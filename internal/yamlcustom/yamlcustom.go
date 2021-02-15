@@ -9,7 +9,8 @@ import (
 
 // ConfigLDAP struct for yaml LDAP config
 type ConfigLDAP struct {
-	UserDN string `yaml:"userdn"`
+	UserDN   string `yaml:"userdn"`
+	LDAP string `yaml:"ldap"`
 }
 
 // Config struct for mnc config

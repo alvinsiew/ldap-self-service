@@ -12,12 +12,13 @@ import (
 func execute(u string, op string, np string) error {
 	conf := yamlcustom.ParseYAML()
 	userDN := conf.Conf[0].UserDN
+	ldapADDR := conf.Conf[1].LDAP
 
 	// here we perform the pwd command.
 	// we can store the output of this in our out variable
 	// and catch any errors in err
 
-	out, err := exec.Command("ldappasswd", "-x", "-D", "cn="+u+","+userDN, "-w", op, "-s", np).Output()
+	out, err := exec.Command("ldappasswd", "-H", ldapADDR, "-x", "-D", "cn="+u+","+userDN, "-w", op, "-s", np).Output()
 
 	// if there is an error with our execution
 	// handle it here
@@ -39,18 +40,18 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "ParseForm() err: %v", err)
 		return
 	}
-	fmt.Fprintf(w, "POST request successful")
+	fmt.Fprintf(w, "POST request successful\n")
 	username := r.FormValue("username")
 	oldPassword := r.FormValue("oldpassword")
 	newPassword := r.FormValue("newpassword")
 
 	result := execute(username, oldPassword, newPassword)
-	s := "Successful"
+	sucess := "Successful"
 
 	if result != nil {
 		fmt.Fprintf(w, "Status = %s\n", result)
 	} else {
-		fmt.Fprintf(w, "Status = %s\n", s)
+		fmt.Fprintf(w, "Status = %s\n", sucess)
 	}
 }
 
