@@ -9,8 +9,8 @@ import (
 
 // ConfigLDAP struct for yaml LDAP config
 type ConfigLDAP struct {
-	UserDN   string `yaml:"userdn"`
-	LDAP string `yaml:"ldap"`
+	UserDN string `yaml:"userdn"`
+	LDAP   string `yaml:"ldap"`
 }
 
 // Config struct for mnc config
@@ -20,12 +20,12 @@ type Config struct {
 
 // ParseYAML parse yaml config file
 func ParseYAML() Config {
-	// usr, err := user.Current()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	filename, err := filepath.Abs("../conf/config.yml")
 
-	filename, _ := filepath.Abs("../conf/config.yml")
+	if err != nil {
+		panic(err)
+	}
+
 	yamlFile, err := ioutil.ReadFile(filename)
 
 	if err != nil {
