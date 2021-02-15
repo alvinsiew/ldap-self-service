@@ -29,7 +29,7 @@ func execute(u string, op string, np string) error {
 	// this to a string or else we will see garbage printed out in our console
 	// this is how we convert it to a string
 	// fmt.Println("Command Successfully Executed")
-	output := out[:]
+	output := string(out)
 	fmt.Println(output)
 
 	return err
