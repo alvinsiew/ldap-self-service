@@ -2,8 +2,6 @@ package yamlcustom
 
 import (
 	"io/ioutil"
-	"log"
-	"os/user"
 	"path/filepath"
 
 	"gopkg.in/yaml.v2"
@@ -21,12 +19,12 @@ type Config struct {
 
 // ParseYAML parse yaml config file
 func ParseYAML() Config {
-	usr, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
+	// usr, err := user.Current()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	filename, _ := filepath.Abs(usr.HomeDir + "../config.yml")
+	filename, _ := filepath.Abs("../config.yml")
 	yamlFile, err := ioutil.ReadFile(filename)
 
 	if err != nil {
