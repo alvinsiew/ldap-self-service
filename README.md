@@ -23,7 +23,7 @@ Update your userdn and ldap conf/config.yaml
 vi /opt/ldap-self-service/config/config.yaml
 ```
 
-Config systemctl to auto start ldapss on server startup
+### Config systemctl to auto start ldapss on server startup
 
 Create systemd startup file
 
