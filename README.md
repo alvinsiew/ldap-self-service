@@ -66,6 +66,8 @@ Accessing LDAP Self Service Portal
 http://localhost:8080
 ```
 
+![Optional Text](../master/screenshots/form.png)
+
 ## Self-compile
 
 ```bash
