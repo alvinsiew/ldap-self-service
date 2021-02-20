@@ -22,7 +22,7 @@ body {
 .box {
   background-color: white;
   border-radius: 4px;
-  box-shadow: #a0a6b9 6px 2px 16px 0px, #a0a6b9 -6px -2px 16px 0px;
+  box-shadow: #a0a6b9 6px 2px 16px 0, #a0a6b9 -6px -2px 16px 0;
   min-width: 320px;
   margin-top: 24px;
   padding: 24px;
@@ -43,7 +43,8 @@ body {
   .main-container {
     padding: 48px;
   }
+  
   .box {
-    min-width: 0px;
+    min-width: 0;
   }
 }
