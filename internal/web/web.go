@@ -31,7 +31,7 @@ func searchMail(u string) string {
 	userDN := conf.Ldap[0].UserDN
 	ldapADDR := conf.Ldap[1].LDAP
 
-	//ldapsearch -H ldap://10.4.1.223 -x -b cn=alvin,ou=users,dc=mgp,dc=com -LLL mail | grep mail | awk '{print $2}'
+	//ldapsearch -H ldap://test-x -b cn=testuser,ou=users,dc=company,dc=com -LLL mail | grep mail | awk '{print $2}'
 	out, err := exec.Command("ldapsearch", "-H", ldapADDR, "-x", "-b", "cn="+u+","+userDN, "-LLL", "mail", "|", "grep", "mail", "|", "awk", "'{print $2}'").Output()
 
 	if err != nil {
