@@ -13,9 +13,17 @@ type ConfigLDAP struct {
 	LDAP   string `yaml:"ldap"`
 }
 
+type ConfigSMTP struct {
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	Hostname string `yaml:"hostname"`
+	From     string `yaml:"from"`
+}
+
 // Config struct for mnc config
 type Config struct {
-	Conf []ConfigLDAP `yaml:"conf"`
+	Ldap []ConfigLDAP `yaml:"ldap"`
+	Smtp []ConfigSMTP `yaml:"smtp"`
 }
 
 // ParseYAML parse yaml config file

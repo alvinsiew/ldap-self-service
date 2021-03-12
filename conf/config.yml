@@ -1,3 +1,9 @@
-conf:
-- userdn: "ou=users,dc=example,dc=com"
-- ldap: "ldap://mgp-ldap.gds-gov.tech"
+ldap:
+ - userdn: "ou=users,dc=example,dc=com"
+ - ldap: "ldap://mgp-ldap.gds-gov.tech"
+
+smtp:
+ - username: "test"
+ - password: "abc123"
+ - hostname: "email.smtp.com"
+ - from: "gopher@example.net"
