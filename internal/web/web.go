@@ -31,7 +31,7 @@ func searchMail(u string) string {
 	userDN := conf.Ldap[0].UserDN
 	ldapADDR := conf.Ldap[1].LDAP
 
-	//ldapsearch -H ldap://test-x -b cn=testuser,ou=users,dc=company,dc=com -LLL mail | grep mail | awk '{print $2}'
+	// ldapsearch -H ldap://test-x -b cn=testuser,ou=users,dc=company,dc=com -LLL mail | grep mail | awk '{print $2}'
 	out, err := exec.Command("ldapsearch", "-H", ldapADDR, "-x", "-b", "cn="+u+","+userDN, "-LLL", "mail", "|", "grep", "mail", "|", "awk", "'{print $2}'").Output()
 
 	if err != nil {
@@ -44,6 +44,7 @@ func searchMail(u string) string {
 	return output
 }
 
+//nolint
 func FormHandler(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err: %v", err)
@@ -51,6 +52,8 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, "POST request successful\n")
 	username := r.FormValue("username")
+	// ...
+
 	oldPassword := r.FormValue("oldpassword")
 	newPassword := r.FormValue("newpassword")
 
@@ -64,6 +67,7 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//nolint
 func ResetHandler(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err: %v", err)
@@ -71,6 +75,8 @@ func ResetHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, "POST request successful\n")
 	username := r.FormValue("username")
+	// ...
+
 	conf := yamlcustom.ParseYAML()
 	smtpUser := conf.Smtp[0].Username
 	password := conf.Smtp[1].Password
@@ -80,8 +86,8 @@ func ResetHandler(w http.ResponseWriter, r *http.Request) {
 	recipients := strings.Fields(searchMail(username))
 
 	result := smtpss.PlainAuth(smtpUser, password, hostname, from, msg, recipients)
-	//result := execute(username, oldPassword, newPassword)
-	//fmt.Println(username, password)
+	// result := execute(username, oldPassword, newPassword)
+	// fmt.Println(username, password)
 
 	sucess := "Successful"
 
