@@ -44,13 +44,17 @@ func searchMail(u string) string {
 	return output
 }
 
-func FormHandler(w http.ResponseWriter, r *http.Request, t string) { //nolint
-	if err := r.ParseForm(); err != nil { //nolint
-		fmt.Fprintf(w, "ParseForm() err: %v", err) //nolint
-		return                                     //nolint
-	} //nolint
-	fmt.Fprintf(w, "POST request successful\n") //nolint
-	username := r.FormValue("username")         //nolint
+//nolint
+func FormHandler(w http.ResponseWriter, r *http.Request, t string) {
+	//nolint
+	if err := r.ParseForm(); err != nil {
+		fmt.Fprintf(w, "ParseForm() err: %v", err)
+		return
+	}
+	//nolint
+	fmt.Fprintf(w, "POST request successful\n")
+	//nolint
+	username := r.FormValue("username")
 
 	oldPassword := r.FormValue("oldpassword")
 	newPassword := r.FormValue("newpassword")
@@ -65,13 +69,17 @@ func FormHandler(w http.ResponseWriter, r *http.Request, t string) { //nolint
 	}
 }
 
-func ResetHandler(w http.ResponseWriter, r *http.Request) { //nolint
-	if err := r.ParseForm(); err != nil { //nolint
-		fmt.Fprintf(w, "ParseForm() err: %v", err) //nolint
-		return                                     //nolint
-	} //nolint
-	fmt.Fprintf(w, "POST request successful\n") //nolint
-	username := r.FormValue("username")         //nolint
+//nolint
+func ResetHandler(w http.ResponseWriter, r *http.Request) {
+	//nolint
+	if err := r.ParseForm(); err != nil {
+		fmt.Fprintf(w, "ParseForm() err: %v", err)
+		return
+	}
+	//nolint
+	fmt.Fprintf(w, "POST request successful\n")
+	//nolint
+	username := r.FormValue("username")
 
 	conf := yamlcustom.ParseYAML()
 	smtpUser := conf.Smtp[0].Username
