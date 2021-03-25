@@ -2,8 +2,10 @@ package web
 
 import (
 	"fmt"
+	"ldap-self-service/internal/random"
 	"ldap-self-service/internal/smtpss"
 	"ldap-self-service/internal/yamlcustom"
+	"log"
 	"net/http"
 	"os/exec"
 	"strings"
@@ -14,7 +16,9 @@ func execute(u string, op string, np string) error {
 	userDN := conf.Ldap[0].UserDN
 	ldapADDR := conf.Ldap[1].LDAP
 
-	out, err := exec.Command("ldappasswd", "-H", ldapADDR, "-x", "-D", "cn="+u+","+userDN, "-w", op, "-s", np).Output()
+	cmd := "ldappasswd -H " + ldapADDR + " -x -D cn=" + u + "," + userDN + " -w " + op + " -s " + np
+	fmt.Println(cmd)
+	out, err := exec.Command("bash", "-c", cmd).Output()
 
 	if err != nil {
 		fmt.Printf("%s", err)
@@ -31,21 +35,21 @@ func searchMail(u string) string {
 	userDN := conf.Ldap[0].UserDN
 	ldapADDR := conf.Ldap[1].LDAP
 
-	// ldapsearch -H ldap://test-x -b cn=testuser,ou=users,dc=company,dc=com -LLL mail | grep mail | awk '{print $2}'
-	out, err := exec.Command("ldapsearch", "-H", ldapADDR, "-x", "-b", "cn="+u+","+userDN, "-LLL", "mail", "|", "grep", "mail", "|", "awk", "'{print $2}'").Output()
+	cmd := "ldapsearch -H " + ldapADDR + " -x -b cn=" + u + "," + userDN + " -LLL mail | grep mail | awk '{print $2}'"
+	out, err := exec.Command("bash", "-c", cmd).Output()
 
 	if err != nil {
 		fmt.Printf("%s", err)
 	}
 
 	output := string(out)
-	fmt.Println(output)
+	//fmt.Println(output)
 
 	return output
 }
 
 //nolint
-func FormHandler(w http.ResponseWriter, r *http.Request, t string) {
+func FormHandler(w http.ResponseWriter, r *http.Request) {
 	//nolint
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err: %v", err)
@@ -81,17 +85,22 @@ func ResetHandler(w http.ResponseWriter, r *http.Request) {
 	//nolint
 	username := r.FormValue("username")
 
+	randomPassword, err := random.GeneratePlainPassword(8)
+	if err != nil {
+		log.Fatal("Password Generation failed!")
+	}
+
 	conf := yamlcustom.ParseYAML()
 	smtpUser := conf.Smtp[0].Username
 	password := conf.Smtp[1].Password
 	hostname := conf.Smtp[2].Hostname
 	from := conf.Smtp[3].From
-	msg := []byte("test message")
+	msg := []byte("Subject: OSG LDAP Password Reset \r\n" +
+		"\r\n" +
+		"New Random Password: " + randomPassword + "\r\n")
 	recipients := strings.Fields(searchMail(username))
 
 	result := smtpss.PlainAuth(smtpUser, password, hostname, from, msg, recipients)
-	// result := execute(username, oldPassword, newPassword)
-	// fmt.Println(username, password)
 
 	sucess := "Successful"
 
