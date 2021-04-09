@@ -101,9 +101,7 @@ func ResetHandler(w http.ResponseWriter, r *http.Request) {
 
 	sucess := "Successful"
 
-	fmt.Println(recipients)
-
-	if recipients != nil {
+	if len(recipients) > 0 {
 		result := smtpss.PlainAuth(smtpUser, password, hostname, from, msg, recipients)
 		if result != nil {
 			_, _ = fmt.Fprintf(w, "Send Email Status = %s\n", result)
@@ -111,7 +109,7 @@ func ResetHandler(w http.ResponseWriter, r *http.Request) {
 			_, _ = fmt.Fprintf(w, "Send Email Status = %s\n", sucess)
 		}
 	} else {
-		fmt.Fprintf(w, "User email not register in LDAP. Please register email for user %s\n", smtpUser)
+		fmt.Fprintf(w, "User email not register in LDAP. Please register email for user %s\n", username)
 	}
 
 }
