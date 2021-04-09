@@ -17,7 +17,6 @@ func execute(u string, op string, np string) error {
 	ldapADDR := conf.Ldap[1].LDAP
 
 	cmd := "ldappasswd -H " + ldapADDR + " -x -D cn=" + u + "," + userDN + " -w " + op + " -s " + np
-	fmt.Println(cmd)
 	out, err := exec.Command("bash", "-c", cmd).Output()
 
 	if err != nil {
@@ -52,11 +51,11 @@ func searchMail(u string) string {
 func FormHandler(w http.ResponseWriter, r *http.Request) {
 	//nolint
 	if err := r.ParseForm(); err != nil {
-		fmt.Fprintf(w, "ParseForm() err: %v", err)
+		_, _ = fmt.Fprintf(w, "ParseForm() err: %v", err)
 		return
 	}
 	//nolint
-	fmt.Fprintf(w, "POST request successful\n")
+	_, _ = fmt.Fprintf(w, "POST request successful\n")
 	//nolint
 	username := r.FormValue("username")
 
@@ -67,9 +66,9 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 	success := "Successful"
 
 	if result != nil {
-		fmt.Fprintf(w, "Status = %s\n", result)
+		_, _ = fmt.Fprintf(w, "Status = %s\n", result)
 	} else {
-		fmt.Fprintf(w, "Status = %s\n", success)
+		_, _ = fmt.Fprintf(w, "Status = %s\n", success)
 	}
 }
 
@@ -77,11 +76,11 @@ func FormHandler(w http.ResponseWriter, r *http.Request) {
 func ResetHandler(w http.ResponseWriter, r *http.Request) {
 	//nolint
 	if err := r.ParseForm(); err != nil {
-		fmt.Fprintf(w, "ParseForm() err: %v", err)
+		_, _ = fmt.Fprintf(w, "ParseForm() err: %v", err)
 		return
 	}
 	//nolint
-	fmt.Fprintf(w, "POST request successful\n")
+	_, _ = fmt.Fprintf(w, "POST request successful\n")
 	//nolint
 	username := r.FormValue("username")
 
@@ -95,18 +94,22 @@ func ResetHandler(w http.ResponseWriter, r *http.Request) {
 	password := conf.Smtp[1].Password
 	hostname := conf.Smtp[2].Hostname
 	from := conf.Smtp[3].From
-	msg := []byte("Subject: OSG LDAP Password Reset \r\n" +
+	msg := []byte("Subject: LDAP Password Reset \r\n" +
 		"\r\n" +
 		"New Random Password: " + randomPassword + "\r\n")
 	recipients := strings.Fields(searchMail(username))
 
-	result := smtpss.PlainAuth(smtpUser, password, hostname, from, msg, recipients)
-
 	sucess := "Successful"
 
-	if result != nil {
-		fmt.Fprintf(w, "Status = %s\n", result)
+	if recipients != nil {
+		result := smtpss.PlainAuth(smtpUser, password, hostname, from, msg, recipients)
+		if result != nil {
+			_, _ = fmt.Fprintf(w, "Send Email Status = %s\n", result)
+		} else {
+			_, _ = fmt.Fprintf(w, "Send Email Status = %s\n", sucess)
+		}
 	} else {
-		fmt.Fprintf(w, "Status = %s\n", sucess)
+		fmt.Fprintf(w, "User email not register in LDAP. Please register email for user %s\n", smtpUser)
 	}
+
 }
