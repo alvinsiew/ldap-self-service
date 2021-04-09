@@ -76,7 +76,7 @@ http://localhost:8080
 http://localhost:8080/form.html
 ```
 
-![Optional Text](../main/screenshots/form.png)
+![Optional Text](../main/screenshots/form.ng)
 
 ## Self-compile
 
