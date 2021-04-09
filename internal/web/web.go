@@ -101,6 +101,8 @@ func ResetHandler(w http.ResponseWriter, r *http.Request) {
 
 	sucess := "Successful"
 
+	fmt.Println(recipients)
+
 	if recipients != nil {
 		result := smtpss.PlainAuth(smtpUser, password, hostname, from, msg, recipients)
 		if result != nil {
