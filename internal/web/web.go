@@ -16,7 +16,9 @@ func execute(u string, op string, np string) error {
 	// we can store the output of this in our out variable
 	// and catch any errors in err
 
-	out, err := exec.Command("ldappasswd", "-H", ldapADDR, "-x", "-D", "cn="+u+","+userDN, "-w", op, "-s", np).Output()
+	//out, err := exec.Command("ldappasswd", "-H", ldapADDR, "-x", "-D", "cn="+u+","+userDN, "-w", op, "-s", np).Output()
+	cmd := "ldappasswd -H " + ldapADDR + " -x -D cn=" + u + "," + userDN + " -w " + op + " -s " + np
+	out, err := exec.Command("bash", "-c", cmd).Output()
 
 	// if there is an error with our execution
 	// handle it here
